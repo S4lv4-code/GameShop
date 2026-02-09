@@ -91,6 +91,7 @@ npm run dev
 ## 👤 Autor
 
  **Salvatore De Rosa Vega** – *Desarrollo Fullstack* – [Tu GitHub](https://www.google.com/search?q=https://github.com/tu-usuario)
+ https://www.figma.com/design/lr0j1s3DyKDksgZs63ak1a/Gameshop-%E2%80%93-UI-Design.?node-id=0-1&t=jsvkHvcVAzXVWEKS-1
 
 ---
 
