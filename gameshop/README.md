@@ -1,50 +1,72 @@
+Aquí tienes el **README.md** estructurado exactamente con los puntos que has solicitado, manteniendo el tono profesional y técnico necesario para tu defensa.
+
+---
 
 # 🎮 GAMERVAULT | Game Library Manager
 
-**GamerVault** es una plataforma de gestión de bibliotecas de videojuegos personal desarrollada con **React** y **PocketBase**. Permite a los usuarios organizar su colección, realizar un seguimiento de su progreso y agrupar sus títulos en colecciones personalizadas.
+**GamerVault** es una aplicación web diseñada para coleccionistas y entusiastas de los videojuegos que buscan centralizar su biblioteca personal. Permite gestionar títulos, realizar un seguimiento del estado de juego y organizar los juegos en colecciones personalizadas de forma eficiente.
 
 ---
 
-## 🚀 Características Principales
+## 📍 Tabla de Contenidos
 
-* **Gestión de Inventario (CRUD):** Añade, edita y elimina juegos con soporte para carga de múltiples imágenes.
-* **Sistema de Colecciones:** Crea grupos personalizados para organizar tus juegos por temática, estado o preferencia.
-* **Dashboard de Estadísticas:** Visualización rápida de juegos totales, terminados y actividad reciente.
-* **Autenticación Completa:** Registro de usuarios, inicio de sesión seguro y gestión de perfil con avatar.
-* **Arquitectura Escalable:** Separación clara entre servicios de API, componentes de UI y lógica de navegación.
-
----
-
-## 🛠️ Stack Tecnológico
-
-| Tecnología | Propósito |
-| --- | --- |
-| **React 18** | Framework de Frontend |
-| **PocketBase** | Backend-as-a-Service (Base de Datos, Auth y Archivos) |
-| **Tailwind CSS** | Estilizado rápido y responsive |
-| **React Router 6** | Navegación y protección de rutas |
-| **Lucide React** | Librería de iconos minimalistas |
+1. [Demo / Capturas](https://www.google.com/search?q=%23-demo--capturas)
+2. [Requisitos Funcionales](https://www.google.com/search?q=%23-requisitos-funcionales)
+3. [Tecnologías Usadas](https://www.google.com/search?q=%23-tecnolog%C3%ADas-usadas)
+4. [Instalación y Requisitos](https://www.google.com/search?q=%23-instalaci%C3%B3n-y-requisitos)
+5. [Variables de Entorno](https://www.google.com/search?q=%23-variables-de-entorno)
+6. [Licencia](https://www.google.com/search?q=%23-licencia)
 
 ---
 
-## 🏗️ Arquitectura del Proyecto
+## 📸 Demo / Capturas
 
-El proyecto sigue una estructura de carpetas organizada para facilitar el mantenimiento y la defensa oral:
+> **Nota:** Puedes ver la aplicación desplegada en: [LINK_A_TU_DEPLOY]
 
-```bash
-src/
-├── components/     # Componentes reutilizables (Botones, Inputs, Cards)
-├── context/        # Manejo del estado global (Autenticación)
-├── layouts/        # Estructura visual común (Sidebar, Header)
-├── pages/          # Vistas principales (Dashboard, Games, Collections)
-├── services/       # Comunicación directa con PocketBase (API calls)
-└── ui/             # Componentes base de la interfaz
+### 1. Dashboard Principal
 
-```
+*Resumen visual con estadísticas en tiempo real sobre el total de juegos, colecciones y el último título añadido.*
+
+### 2. Gestión de Juegos
+
+*Listado de juegos con tarjetas interactivas que muestran plataforma, estado y la colección a la que pertenecen.*
+
+### 3. Vista de Colecciones
+
+*Pantalla detallada donde se filtran y muestran exclusivamente los juegos vinculados a una colección específica.*
 
 ---
 
-## ⚙️ Configuración e Instalación
+## ⚙️ Requisitos Funcionales (¿Qué hace?)
+
+* **Autenticación de Usuarios:** Sistema de registro, login y gestión de perfil (avatar y nombre de usuario).
+* **CRUD de Juegos:** Creación, lectura, edición y eliminación de videojuegos con soporte para múltiples imágenes.
+* **Sistema de Colecciones:** Creación de listas personalizadas (Muchos a Muchos) mediante una tabla intermedia.
+* **Seguimiento de Estado:** Clasificación de juegos en "Pendiente", "Jugando" o "Completado".
+* **Persistencia de Datos:** Los datos se mantienen seguros y vinculados a la cuenta de cada usuario en el servidor.
+
+---
+
+## 🛠️ Tecnologías Usadas
+
+* **React 18:** Biblioteca principal para la interfaz de usuario.
+* **Vite:** Herramienta de construcción y desarrollo rápido.
+* **React Router Dom:** Gestión de rutas protegidas y navegación SPA.
+* **Tailwind CSS:** Framework de estilos para un diseño moderno y responsive.
+* **PocketBase:** Backend-as-a-Service para la base de datos, autenticación y almacenamiento de archivos.
+* **NPM:** Gestor de paquetes de Node.js.
+
+---
+
+## 🚀 Instalación y Requisitos
+
+### Requisitos Previos
+
+* **Node.js:** Versión 18.0 o superior.
+* **NPM:** Instalado globalmente.
+* **PocketBase:** Servidor en ejecución (local o remoto).
+
+### Pasos para instalar
 
 1. **Clonar el repositorio:**
 ```bash
@@ -61,13 +83,7 @@ npm install
 ```
 
 
-3. **Configurar el Backend:**
-* Descarga y ejecuta [PocketBase](https://pocketbase.io/).
-* Crea las colecciones: `users`, `games`, `collections` y `collection_games`.
-* Configura el **Cascade Delete** en la tabla intermedia.
-
-
-4. **Ejecutar el proyecto:**
+3. **Ejecutar en desarrollo:**
 ```bash
 npm run dev
 
@@ -77,21 +93,30 @@ npm run dev
 
 ---
 
-## 📝 Documentación de la Base de Datos
+## 🔐 Variables de Entorno
 
-### Relaciones (ERD)
+Para que la aplicación se conecte correctamente al backend, crea un archivo `.env` en la raíz del proyecto:
 
-* **Users:** Posee juegos y colecciones.
-* **Games:** Entidad principal con título, plataforma, estado e imágenes.
-* **Collections:** Título y descripción.
-* **Collection_Games:** Tabla intermedia (Many-to-Many) que vincula juegos con colecciones sin duplicar datos.
+```env
+# URL de conexión a tu instancia de PocketBase
+VITE_POCKETBASE_URL="http://127.0.0.1:8090"
 
----
-
-## 👤 Autor
-
- **Salvatore De Rosa Vega** – *Desarrollo Fullstack* – [Tu GitHub](https://www.google.com/search?q=https://github.com/tu-usuario)
- https://www.figma.com/design/lr0j1s3DyKDksgZs63ak1a/Gameshop-%E2%80%93-UI-Design.?node-id=0-1&t=jsvkHvcVAzXVWEKS-1
+```
 
 ---
 
+## ⚖️ Licencia
+
+Este proyecto está bajo la licencia **MIT**. Eres libre de usarlo y modificarlo siempre que se mantenga el reconocimiento de autoría.
+
+---
+
+## 👤 Autor / Contacto
+
+* **Nombre:** [TU NOMBRE COMPLETO]
+* **GitHub:** [@tu-usuario-github](https://www.google.com/search?q=https://github.com/tu-usuario)
+* **LinkedIn:** [tu-perfil-linkedin]
+
+---
+
+**¿Te gustaría que añadamos alguna sección extra sobre la lógica de la base de datos o pasamos directamente a revisar el Sidebar?**

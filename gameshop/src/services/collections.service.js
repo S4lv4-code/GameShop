@@ -35,9 +35,8 @@ export async function getCollectionsWithCount() {
   
   // Para cada colección, contamos cuántos juegos tiene en la tabla intermedia
   const collectionsWithCount = await Promise.all(collections.map(async (col) => {
-    const games = await pb.collection("collection_games").getList(1, 1, {
-      filter: `collection = "${col.id}"`
-    });
+    const games = await pb.collection("collection_games")
+    .getList(1, 1, { filter: `collection = "${col.id}"`, $autoCancel: false });
     return { ...col, gamesCount: games.totalItems };
   }));
 
