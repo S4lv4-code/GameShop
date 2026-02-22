@@ -9,32 +9,34 @@ export async function getGamesByCollecion(collectionId) {
   });
 }
 
-export async function getRelationByGame(gameId) {
+export async function getRelationsByGame(gameId) {
   try {
-    return await pb.collection("collection_games").getFirstListItem(`game="${gameId}"`);
+    return await pb.collection("collection_games").getFullList({
+      filter: `game="${gameId}"`
+    });
   } catch {
-    return null;
+    return [];
   }
 }
 
 export async function addGameToCollection(collectionId, gameId) {
   try {
-    // Verificación: ¿Ya existe este juego en esta colección?
+    // Añadimos { requestKey: null } para evitar el auto-cancel
     const existing = await pb.collection("collection_games").getList(1, 1, {
-      filter: `collection="${collectionId}" && game="${gameId}"`
+      filter: `collection="${collectionId}" && game="${gameId}"`,
+      requestKey: null // <--- CRUCIAL
     });
 
-    if (existing.totalItems > 0) {
-      console.log("El juego ya pertenece a esta colección.");
-      return existing.items[0];
-    }
+    if (existing.totalItems > 0) return existing.items[0];
 
     return await pb.collection("collection_games").create({
       collection: collectionId,
       game: gameId,
-    });
+    }, { requestKey: null }); // <--- TAMBIÉN AQUÍ
   } catch (error) {
-    console.error("Error al vincular juego y colección:", error);
+    // Si el error es por cancelación, lo ignoramos silenciosamente
+    if (error.isAbort) return; 
+    console.error("Error al vincular:", error);
     throw error;
   }
 }

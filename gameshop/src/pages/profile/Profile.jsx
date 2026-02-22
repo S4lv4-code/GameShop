@@ -31,7 +31,7 @@ export function Profile() {
 
       <form onSubmit={handleUpdate} className="space-y-6 bg-gray-900/30 p-8 rounded-2xl border border-gray-800">
         <Input label="Nombre de Usuario" name="username" defaultValue={user?.username} />
-        <Input label="Email" name="email" defaultValue={user?.email} disabled className="opacity-50" />
+        <Input label="Email " name="email" defaultValue={user?.email} disabled className="opacity-50" />
         
         <div className="space-y-2">
           <label className="text-[10px] font-black uppercase text-gray-500 tracking-widest">Avatar de Jugador</label>

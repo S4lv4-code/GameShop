@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getCollectionById } from "../../services/collections.service";
-import { getGamesByCollecion } from "../../services/collectionsGames.service";
+import { getGamesByCollecion, removeGameFromCollection } from "../../services/collectionsGames.service";
 import GameCard from "../../components/games/GameCard";
 import { Button } from "../../components/ui/Button";
 
@@ -24,11 +24,16 @@ export function CollectionView() {
   useEffect(() => { loadData(); }, [id]);
 
   const handleRemove = async (relationId) => {
-    if (confirm("¿Quitar este juego de la colección? (El juego no se borrará)")) {
+  if (confirm("¿Quitar este juego de la colección?")) {
+    try {
       await removeGameFromCollection(relationId);
-      loadData(); // Recargamos la lista
+      // Actualizamos el estado local inmediatamente para que el juego desaparezca sin esperar al fetch
+      setRelations(prev => prev.filter(rel => rel.id !== relationId));
+    } catch (error) {
+      console.error("No se pudo quitar el juego", error);
     }
-  };
+  }
+};
 
   if (!collection)
     return (

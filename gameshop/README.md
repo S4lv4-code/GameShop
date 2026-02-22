@@ -152,3 +152,4 @@ Este proyecto está bajo la licencia **MIT**. Eres libre de usarlo y modificarlo
 
 * **Nombre:** Salvatore De Rosa Vega
 * **GitHub:** [@S4lv4-code](https://github.com/S4lv4-code)
+* **Figma:** (https://www.figma.com/design/lr0j1s3DyKDksgZs63ak1a/Gameshop-%E2%80%93-UI-Design.?node-id=0-1&t=1kcC5JIk6yd2FdTI-1)

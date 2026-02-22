@@ -2,7 +2,7 @@ import { Button } from "../ui/Button";
 import { Input } from "../ui/Input";
 import { useAuth } from "../../context/AuthContext";
 
-function GameForm({ onSubmit, onCancel, defaultValues = {}, collections = [], initialCollectionId = "" }) {
+function GameForm({ onSubmit, onCancel, defaultValues = {}, collections = [], initialCollectionIds = [] }) {
   const { user } = useAuth();
 
   const handleSubmit = (e) => {
@@ -11,17 +11,14 @@ function GameForm({ onSubmit, onCancel, defaultValues = {}, collections = [], in
     formData.set("user", user.id); 
 
     const fileInput = e.target.images;
-    // Si no hay archivos nuevos, eliminamos el campo para no pisar las fotos actuales en PB
     if (!fileInput || fileInput.files.length === 0) {
       formData.delete("images");
     } else {
-      // Si hay archivos, los añadimos correctamente uno a uno
       formData.delete("images");
       for (let file of fileInput.files) {
         formData.append("images", file);
       }
     }
-
     onSubmit(formData);
   };
 
@@ -50,21 +47,27 @@ function GameForm({ onSubmit, onCancel, defaultValues = {}, collections = [], in
         </div>
       </div>
 
-      {/* Selector Opcional: Aparece siempre (Crear y Editar) */}
-      <div className="space-y-2">
+      <div className="space-y-3">
         <label className="text-[10px] font-black uppercase text-gray-500 tracking-widest text-blue-400">
-          Colección
+          Añadir a Colecciones
         </label>
-        <select 
-          name="collection_id" 
-          defaultValue={initialCollectionId} // Aquí se pre-selecciona
-          className="w-full bg-gray-900 border border-blue-900/30 rounded-lg p-3 text-white outline-none focus:border-blue-500"
-        >
-          <option value="">-- Sin colección / Ninguna --</option>
+        <div className="grid grid-cols-2 gap-3 bg-black/40 p-4 rounded-xl border border-gray-800 max-h-40 overflow-y-auto">
           {collections.map(c => (
-            <option key={c.id} value={c.id}>{c.title}</option>
+            <label key={c.id} className="flex items-center gap-3 cursor-pointer group">
+              <input 
+                type="checkbox" 
+                name="collection_ids" 
+                value={c.id}
+                defaultChecked={initialCollectionIds.includes(c.id)}
+                className="w-4 h-4 rounded border-gray-700 bg-gray-900 text-blue-600 focus:ring-blue-500"
+              />
+              <span className="text-sm text-gray-400 group-hover:text-white transition-colors">
+                {c.title}
+              </span>
+            </label>
           ))}
-        </select>
+          {collections.length === 0 && <p className="text-xs text-gray-600 italic">No tienes colecciones creadas.</p>}
+        </div>
       </div>
 
       <div className="space-y-2">

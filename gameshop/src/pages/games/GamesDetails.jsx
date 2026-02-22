@@ -1,62 +1,79 @@
+import { useEffect, useState, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import GameForm from "../../components/games/GameForm";
 import { createGame, getGameById, updateGame } from "../../services/games.service";
 import { getCollections } from "../../services/collections.service";
-import { addGameToCollection, getRelationByGame } from "../../services/collectionsGames.service";
-import { useEffect, useState } from "react";
+import { 
+  addGameToCollection, 
+  getRelationsByGame, 
+  removeGameFromCollection 
+} from "../../services/collectionsGames.service";
 
 export function GamesDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [game, setGame] = useState(null);
+  
+  const [game, setGame] = useState({});
   const [collections, setCollections] = useState([]);
+  const [currentCollectionIds, setCurrentCollectionIds] = useState([]);
   const [loading, setLoading] = useState(!!id);
-  const [currentCollectionId, setCurrentCollectionId] = useState("");
 
+  // Cargamos los datos iniciales
   useEffect(() => {
-    getCollections().then(setCollections).catch(() => setCollections([]));
+    const fetchData = async () => {
+      try {
+        const cols = await getCollections();
+        setCollections(cols);
 
-    if (id) {
-      // Cargamos el juego y su relación simultáneamente
-      Promise.all([getGameById(id), getRelationByGame(id)])
-        .then(([gameData, relation]) => {
+        if (id) {
+          const [gameData, relations] = await Promise.all([
+            getGameById(id), 
+            getRelationsByGame(id)
+          ]);
           setGame(gameData);
-          if (relation) setCurrentCollectionId(relation.collection);
-        })
-        .catch(() => navigate("/games"))
-        .finally(() => setLoading(false));
-    }
+          setCurrentCollectionIds(relations.map(r => r.collection));
+        }
+      } catch (err) {
+        navigate("/games");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
   }, [id, navigate]);
 
   const handleSubmit = async (formData) => {
     try {
-      const collectionId = formData.get("collection_id");
-      formData.delete("collection_id"); // Limpiamos para la tabla 'games'
+      const selectedIds = formData.getAll("collection_ids");
+      formData.delete("collection_ids");
 
-      let gameId = id;
+      // Guardar o Actualizar Juego
+      const savedGame = id ? await updateGame(id, formData) : await createGame(formData);
+      const gameId = id || savedGame.id;
 
-      if (id) {
-        // 1. Actualizar datos básicos e imágenes (se mantienen si images es empty en formData)
-        await updateGame(id, formData);
-      } else {
-        // 2. Crear juego nuevo
-        const savedGame = await createGame(formData);
-        gameId = savedGame.id;
-      }
+      // Sincronizar Colecciones (Lógica limpia)
+      const existingRelations = id ? await getRelationsByGame(gameId) : [];
+      const existingIds = existingRelations.map(r => r.collection);
 
-      // 3. Gestionar Colección (Solo si el usuario seleccionó una)
-      if (collectionId && collectionId !== "") {
-        await addGameToCollection(collectionId, gameId);
-      }
+      // Borrar desmarcadas
+      const toDelete = existingRelations.filter(r => !selectedIds.includes(r.collection));
+      await Promise.all(toDelete.map(r => removeGameFromCollection(r.id)));
+
+      // Añadir nuevas
+      const toAdd = selectedIds.filter(colId => !existingIds.includes(colId));
+      await Promise.all(toAdd.map(colId => addGameToCollection(colId, gameId)));
 
       navigate("/games");
     } catch (error) {
-      console.error("Error en el proceso:", error);
-      alert("No se pudo guardar la información.");
+      alert("Error al procesar el formulario");
     }
   };
 
-  if (loading) return <div className="p-20 text-center text-white font-black animate-pulse">CARGANDO...</div>;
+  if (loading) return (
+    <div className="p-20 text-center text-white font-black animate-pulse uppercase">
+      Cargando...
+    </div>
+  );
 
   return (
     <div className="space-y-8 max-w-4xl mx-auto">
@@ -64,15 +81,17 @@ export function GamesDetails() {
         <h1 className="text-4xl font-black text-white uppercase tracking-tighter">
           {id ? "Editar Detalles" : "Nuevo Título"}
         </h1>
-        <p className="text-gray-400">{id ? "Actualiza la información y gestión de colecciones." : "Añade un juego a tu biblioteca."}</p>
+        <p className="text-gray-400">
+          {id ? "Actualiza la información y gestión de colecciones." : "Añade un juego a tu biblioteca."}
+        </p>
       </header>
-      
-      <GameForm 
-        onSubmit={handleSubmit} 
-        onCancel={() => navigate("/games")} 
-        defaultValues={game || {}} 
+
+      <GameForm
+        onSubmit={handleSubmit}
+        onCancel={() => navigate("/games")}
+        defaultValues={game}
         collections={collections}
-        initialCollectionId={currentCollectionId}
+        initialCollectionIds={currentCollectionIds}
       />
     </div>
   );
