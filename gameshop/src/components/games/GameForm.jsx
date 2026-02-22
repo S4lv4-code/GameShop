@@ -2,7 +2,7 @@ import { Button } from "../ui/Button";
 import { Input } from "../ui/Input";
 import { useAuth } from "../../context/AuthContext";
 
-function GameForm({ onSubmit, onCancel, defaultValues = {}, collections = [] }) {
+function GameForm({ onSubmit, onCancel, defaultValues = {}, collections = [], initialCollectionId = "" }) {
   const { user } = useAuth();
 
   const handleSubmit = (e) => {
@@ -53,10 +53,14 @@ function GameForm({ onSubmit, onCancel, defaultValues = {}, collections = [] }) 
       {/* Selector Opcional: Aparece siempre (Crear y Editar) */}
       <div className="space-y-2">
         <label className="text-[10px] font-black uppercase text-gray-500 tracking-widest text-blue-400">
-          Añadir a una Colección (Opcional)
+          Colección
         </label>
-        <select name="collection_id" className="w-full bg-gray-900 border border-blue-900/30 rounded-lg p-3 text-white outline-none focus:border-blue-500">
-          <option value="">-- No asignar o mantener actuales --</option>
+        <select 
+          name="collection_id" 
+          defaultValue={initialCollectionId} // Aquí se pre-selecciona
+          className="w-full bg-gray-900 border border-blue-900/30 rounded-lg p-3 text-white outline-none focus:border-blue-500"
+        >
+          <option value="">-- Sin colección / Ninguna --</option>
           {collections.map(c => (
             <option key={c.id} value={c.id}>{c.title}</option>
           ))}

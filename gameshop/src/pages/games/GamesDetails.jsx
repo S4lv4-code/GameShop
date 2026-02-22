@@ -2,7 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import GameForm from "../../components/games/GameForm";
 import { createGame, getGameById, updateGame } from "../../services/games.service";
 import { getCollections } from "../../services/collections.service";
-import { addGameToCollection } from "../../services/collectionsGames.service";
+import { addGameToCollection, getRelationByGame } from "../../services/collectionsGames.service";
 import { useEffect, useState } from "react";
 
 export function GamesDetails() {
@@ -11,14 +11,18 @@ export function GamesDetails() {
   const [game, setGame] = useState(null);
   const [collections, setCollections] = useState([]);
   const [loading, setLoading] = useState(!!id);
+  const [currentCollectionId, setCurrentCollectionId] = useState("");
 
   useEffect(() => {
-    // Cargamos colecciones siempre (para el select)
     getCollections().then(setCollections).catch(() => setCollections([]));
 
     if (id) {
-      getGameById(id)
-        .then(setGame)
+      // Cargamos el juego y su relación simultáneamente
+      Promise.all([getGameById(id), getRelationByGame(id)])
+        .then(([gameData, relation]) => {
+          setGame(gameData);
+          if (relation) setCurrentCollectionId(relation.collection);
+        })
         .catch(() => navigate("/games"))
         .finally(() => setLoading(false));
     }
@@ -68,6 +72,7 @@ export function GamesDetails() {
         onCancel={() => navigate("/games")} 
         defaultValues={game || {}} 
         collections={collections}
+        initialCollectionId={currentCollectionId}
       />
     </div>
   );

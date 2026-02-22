@@ -7,51 +7,83 @@ import { Button } from "../../components/ui/Button";
 
 export function CollectionView() {
   const { id } = useParams();
+  const [relations, setRelations] = useState([]);
   const navigate = useNavigate();
   const [collection, setCollection] = useState(null);
   const [games, setGames] = useState([]);
 
-  useEffect(() => {
-    async function loadData() {
-      try {
-        const colData = await getCollectionById(id);
-        const gamesData = await getGamesByCollecion(id); // Usa tu service de tabla intermedia
-        setCollection(colData);
-        // Extraemos el objeto 'game' que viene dentro del expand de collection_games
-        setGames(gamesData.map(item => item.expand.game));
-      } catch (error) {
-        navigate("/collections");
-      }
-    }
-    loadData();
-  }, [id, navigate]);
+  const loadData = async () => {
+    try {
+      const colData = await getCollectionById(id);
+      const gamesData = await getGamesByCollecion(id);
+      setCollection(colData);
+      setRelations(gamesData); // Guardamos toda la info (id de la relación + expand)
+    } catch (error) { navigate("/collections"); }
+  };
 
-  if (!collection) return <div className="text-white p-10 uppercase font-black animate-pulse">Cargando colección...</div>;
+  useEffect(() => { loadData(); }, [id]);
+
+  const handleRemove = async (relationId) => {
+    if (confirm("¿Quitar este juego de la colección? (El juego no se borrará)")) {
+      await removeGameFromCollection(relationId);
+      loadData(); // Recargamos la lista
+    }
+  };
+
+  if (!collection)
+    return (
+      <div className="text-white p-10 uppercase font-black animate-pulse">
+        Cargando colección...
+      </div>
+    );
 
   return (
     <div className="space-y-8">
       <header className="flex justify-between items-start">
         <div>
-          <h1 className="text-4xl font-black text-white uppercase tracking-tighter">{collection.title}</h1>
-          <p className="text-gray-500 mt-2 max-w-xl">{collection.description}</p>
+          <h1 className="text-4xl font-black text-white uppercase tracking-tighter">
+            {collection.title}
+          </h1>
+          <p className="text-gray-500 mt-2 max-w-xl">
+            {collection.description}
+          </p>
         </div>
         <div className="flex gap-3">
-          <Button variant="secondary" onClick={() => navigate(`/collections/${id}/edit`)}>Editar Datos</Button>
-          <Button variant="ghost" onClick={() => navigate("/collections")}>Volver</Button>
+          <Button
+            variant="secondary"
+            onClick={() => navigate(`/collections/${id}/edit`)}
+          >
+            Editar Datos
+          </Button>
+          <Button variant="ghost" onClick={() => navigate("/collections")}>
+            Volver
+          </Button>
         </div>
       </header>
 
       <section>
-        <h2 className="text-xl font-bold text-white uppercase mb-6 tracking-widest text-gray-400">Juegos en esta colección</h2>
+        <h2 className="text-xl font-bold text-white uppercase mb-6 tracking-widest text-gray-400">Juegos</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {games.length > 0 ? (
-            games.map((game) => (
-              <GameCard key={game.id} game={game} onEdit={() => navigate(`/games/${game.id}`)} />
+          {relations.length > 0 ? (
+            relations.map((rel) => (
+              <div key={rel.id} className="relative group">
+                {/* Botón flotante para desvincular */}
+                <button 
+                  onClick={() => handleRemove(rel.id)}
+                  className="absolute -top-2 -right-2 z-10 bg-red-600 text-white w-8 h-8 rounded-full font-black opacity-0 group-hover:opacity-100 transition-opacity shadow-xl"
+                  title="Quitar de la colección"
+                >
+                  ✕
+                </button>
+                
+                <GameCard 
+                  game={rel.expand.game} 
+                  onEdit={() => navigate(`/games/${rel.expand.game.id}`)} 
+                />
+              </div>
             ))
           ) : (
-            <p className="col-span-full text-gray-600 italic py-10 border-2 border-dashed border-gray-800 rounded-2xl text-center">
-              Aún no hay juegos vinculados a esta colección.
-            </p>
+             <p>No hay juegos...</p>
           )}
         </div>
       </section>

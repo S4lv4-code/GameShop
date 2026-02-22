@@ -6,6 +6,7 @@ const AuthContext = createContext(null);
 export function AuthProvider({ children }) {
     const [user, setUser] = useState(pb.authStore.record);
     const [loading, setLoading] = useState(true);
+    
 
     useEffect(() => {
         setUser(pb.authStore.record);
@@ -45,3 +46,4 @@ export function AuthProvider({ children }) {
 export function useAuth(){
     return useContext(AuthContext);
 }
+ 

@@ -1,79 +1,109 @@
-Aquí tienes el **README.md** estructurado exactamente con los puntos que has solicitado, manteniendo el tono profesional y técnico necesario para tu defensa.
-
----
 
 # 🎮 GAMERVAULT | Game Library Manager
 
-**GamerVault** es una aplicación web diseñada para coleccionistas y entusiastas de los videojuegos que buscan centralizar su biblioteca personal. Permite gestionar títulos, realizar un seguimiento del estado de juego y organizar los juegos en colecciones personalizadas de forma eficiente.
+**GAMESHOP** es una plataforma integral de gestión de bibliotecas de videojuegos diseñada para coleccionistas y jugadores que buscan organizar su catálogo personal. La aplicación permite centralizar títulos, realizar un seguimiento del estado de juego y agruparlos en colecciones personalizadas de forma intuitiva y eficiente.
 
 ---
 
 ## 📍 Tabla de Contenidos
 
-1. [Demo / Capturas](https://www.google.com/search?q=%23-demo--capturas)
-2. [Requisitos Funcionales](https://www.google.com/search?q=%23-requisitos-funcionales)
-3. [Tecnologías Usadas](https://www.google.com/search?q=%23-tecnolog%C3%ADas-usadas)
-4. [Instalación y Requisitos](https://www.google.com/search?q=%23-instalaci%C3%B3n-y-requisitos)
-5. [Variables de Entorno](https://www.google.com/search?q=%23-variables-de-entorno)
-6. [Licencia](https://www.google.com/search?q=%23-licencia)
+- [🎮 GAMERVAULT | Game Library Manager](#-gamervault--game-library-manager)
+  - [📍 Tabla de Contenidos](#-tabla-de-contenidos)
+  - [🖼️ Demo y Capturas](#️-demo-y-capturas)
+    - [🖥️ Vista General: Dashboard](#️-vista-general-dashboard)
+    - [🎮 Gestión de Biblioteca](#-gestión-de-biblioteca)
+    - [📂 Detalle de Colecciones](#-detalle-de-colecciones)
+    - [👤 Perfil y Seguridad](#-perfil-y-seguridad)
+  - [⚙️ Requisitos Funcionales](#️-requisitos-funcionales)
+  - [🛠️ Tecnologías Usadas](#️-tecnologías-usadas)
+  - [📋 Requisitos Previos](#-requisitos-previos)
+  - [🚀 Instalación](#-instalación)
+  - [🔐 Variables de Entorno](#-variables-de-entorno)
+  - [⚖️ Licencia](#️-licencia)
+  - [👤 Autor / Contacto](#-autor--contacto)
+---
+
+## 🖼️ Demo y Capturas
+
+> **Acceso a la Demo:** [Ver proyecto en vivo](TU_LINK_DE_VERCEL_O_NETLIFY) *(Opcional: elimina esta línea si no tienes deploy)*
+
+### 🖥️ Vista General: Dashboard
+![Dashboard de GameShop](ruta/captura-dashboard.png)
+*El panel principal ofrece una visión rápida de las estadísticas globales: número total de juegos en la biblioteca, colecciones creadas y el último título añadido.*
+
+### 🎮 Gestión de Biblioteca
+![Listado de Juegos](ruta/captura-juegos.png)
+*Vista de todos los juegos donde el usuario puede visualizar carátulas, filtrar por plataforma y estado (Pendiente, Jugando, Completado) y acceder a la edición.*
+
+### 📂 Detalle de Colecciones
+![Vista de Colecciones](ruta/captura-colecciones.png)
+*Exploración de listas personalizadas. Permite ver exclusivamente los títulos asignados a una categoría específica sin redundancia de datos.*
+
+### 👤 Perfil y Seguridad
+![Pantalla de Login y Perfil](ruta/captura-perfil.png)
+*Sistema de autenticación y gestión de perfil, donde el usuario puede personalizar su avatar y nombre de jugador.*
 
 ---
 
-## 📸 Demo / Capturas
+## ⚙️ Requisitos Funcionales
 
-> **Nota:** Puedes ver la aplicación desplegada en: [LINK_A_TU_DEPLOY]
+La aplicación ha sido diseñada para cubrir el ciclo completo de gestión de una biblioteca digital, cumpliendo con las siguientes funcionalidades:
 
-### 1. Dashboard Principal
-
-*Resumen visual con estadísticas en tiempo real sobre el total de juegos, colecciones y el último título añadido.*
-
-### 2. Gestión de Juegos
-
-*Listado de juegos con tarjetas interactivas que muestran plataforma, estado y la colección a la que pertenecen.*
-
-### 3. Vista de Colecciones
-
-*Pantalla detallada donde se filtran y muestran exclusivamente los juegos vinculados a una colección específica.*
-
----
-
-## ⚙️ Requisitos Funcionales (¿Qué hace?)
-
-* **Autenticación de Usuarios:** Sistema de registro, login y gestión de perfil (avatar y nombre de usuario).
-* **CRUD de Juegos:** Creación, lectura, edición y eliminación de videojuegos con soporte para múltiples imágenes.
-* **Sistema de Colecciones:** Creación de listas personalizadas (Muchos a Muchos) mediante una tabla intermedia.
-* **Seguimiento de Estado:** Clasificación de juegos en "Pendiente", "Jugando" o "Completado".
-* **Persistencia de Datos:** Los datos se mantienen seguros y vinculados a la cuenta de cada usuario en el servidor.
+* **Autenticación y Autorización:**
+    * Registro de nuevos usuarios e inicio de sesión seguro mediante JWT.
+    * Persistencia de sesión mediante `pb.authStore` (LocalStorage).
+    * Protección de rutas para evitar accesos no autorizados a la biblioteca privada.
+* **Gestión de Videojuegos (CRUD):**
+    * **Crear:** Añadir juegos con detalles como plataforma, estado y múltiples capturas de pantalla.
+    * **Leer:** Visualización en cuadrícula con placeholders dinámicos para juegos sin imagen.
+    * **Actualizar:** Modificación de metadatos y gestión de imágenes existentes.
+    * **Borrar:** Eliminación física de registros y sus archivos asociados en el servidor.
+* **Sistema de Colecciones (Relación Muchos a Muchos):**
+    * Creación de agrupaciones personalizadas independientes de los juegos.
+    * Vinculación/Desvinculación de juegos a colecciones mediante una tabla intermedia.
+    * Navegación jerárquica: de la lista de colecciones al detalle de los juegos contenidos.
+* **Perfil de Usuario:**
+    * Personalización de cuenta (Avatar y Nombre).
+    * Sistema de borrado de cuenta integrado.
 
 ---
 
 ## 🛠️ Tecnologías Usadas
 
-* **React 18:** Biblioteca principal para la interfaz de usuario.
-* **Vite:** Herramienta de construcción y desarrollo rápido.
-* **React Router Dom:** Gestión de rutas protegidas y navegación SPA.
-* **Tailwind CSS:** Framework de estilos para un diseño moderno y responsive.
-* **PocketBase:** Backend-as-a-Service para la base de datos, autenticación y almacenamiento de archivos.
-* **NPM:** Gestor de paquetes de Node.js.
+El proyecto se ha desarrollado bajo una arquitectura moderna de **SPA (Single Page Application)**, separando completamente el Frontend del Backend (BaaS).
+
+* **Entorno de Desarrollo y Build:** [Vite](https://vitejs.dev/) - Herramienta de construcción de última generación para una experiencia de desarrollo rápida.
+* **Frontend:**
+    * **React (v18):** Biblioteca principal para la construcción de la interfaz basada en componentes.
+    * **React Router Dom (v6):** Gestión de enrutamiento dinámico y protección de navegación.
+    * **Tailwind CSS:** Framework de utilidades para el diseño responsive y estilización moderna.
+    * **React Hot Toast:** Sistema de notificaciones no intrusivas para feedback de usuario.
+* **Backend & Persistencia:**
+    * **PocketBase:** Backend-as-a-Service (BaaS) que integra base de datos SQLite, Auth y File Storage.
+    * **SDK PocketBase:** Cliente oficial para la comunicación asíncrona con la API.
+* **Gestión de Paquetes:** `npm` (Node Package Manager).
 
 ---
 
-## 🚀 Instalación y Requisitos
+## 📋 Requisitos Previos
 
-### Requisitos Previos
+Antes de comenzar, asegúrate de tener instalado lo siguiente:
 
 * **Node.js:** Versión 18.0 o superior.
-* **NPM:** Instalado globalmente.
-* **PocketBase:** Servidor en ejecución (local o remoto).
+* **Gestor de paquetes:** `npm` (viene incluido con Node.js).
+* **Servidor PocketBase:** Necesitas una instancia de [PocketBase](https://pocketbase.io/docs/) ejecutándose (ya sea local o en la nube) para que la base de datos sea accesible.
 
-### Pasos para instalar
+---
+
+## 🚀 Instalación
+
+Sigue estos pasos para configurar el entorno de desarrollo local:
 
 1. **Clonar el repositorio:**
-```bash
-git clone https://github.com/tu-usuario/gamervault.git
-cd gamervault
-
-```
+ ```bash
+ git clone [https://github.com/S4lv4-code/GameShop.git](https://github.com/S4lv4-code/GameShop.git)
+ cd GameShop/gameshop
+ ```
 
 
 2. **Instalar dependencias:**
@@ -81,15 +111,22 @@ cd gamervault
 npm install
 
 ```
+3. **Configurar el Backend:**
 
+Asegúrate de tener tu ejecutable de pocketbase en una carpeta aparte o en la raíz.
 
-3. **Ejecutar en desarrollo:**
+Ejecuta el servidor de PocketBase:
+
+```bash
+./pocketbase serve
+```
+
+4. **Ejecutar en desarrollo:**
 ```bash
 npm run dev
 
 ```
-
-
+La aplicación será accesible en http://localhost:5173.
 
 ---
 
@@ -113,10 +150,5 @@ Este proyecto está bajo la licencia **MIT**. Eres libre de usarlo y modificarlo
 
 ## 👤 Autor / Contacto
 
-* **Nombre:** [TU NOMBRE COMPLETO]
-* **GitHub:** [@tu-usuario-github](https://www.google.com/search?q=https://github.com/tu-usuario)
-* **LinkedIn:** [tu-perfil-linkedin]
-
----
-
-**¿Te gustaría que añadamos alguna sección extra sobre la lógica de la base de datos o pasamos directamente a revisar el Sidebar?**
+* **Nombre:** Salvatore De Rosa Vega
+* **GitHub:** [@S4lv4-code](https://github.com/S4lv4-code)
