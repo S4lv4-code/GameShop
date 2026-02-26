@@ -25,22 +25,20 @@
 
 ## 🖼️ Demo y Capturas
 
-> **Acceso a la Demo:** [Ver proyecto en vivo](TU_LINK_DE_VERCEL_O_NETLIFY) *(Opcional: elimina esta línea si no tienes deploy)*
-
 ### 🖥️ Vista General: Dashboard
-![Dashboard de GameShop](ruta/captura-dashboard.png)
+![Dashboard de GameShop](./images/DashBoard.png)
 *El panel principal ofrece una visión rápida de las estadísticas globales: número total de juegos en la biblioteca, colecciones creadas y el último título añadido.*
 
 ### 🎮 Gestión de Biblioteca
-![Listado de Juegos](ruta/captura-juegos.png)
+![Listado de Juegos](./images/GamenList.png)
 *Vista de todos los juegos donde el usuario puede visualizar carátulas, filtrar por plataforma y estado (Pendiente, Jugando, Completado) y acceder a la edición.*
 
 ### 📂 Detalle de Colecciones
-![Vista de Colecciones](ruta/captura-colecciones.png)
+![Vista de Colecciones](./images/Collections.png)
 *Exploración de listas personalizadas. Permite ver exclusivamente los títulos asignados a una categoría específica sin redundancia de datos.*
 
 ### 👤 Perfil y Seguridad
-![Pantalla de Login y Perfil](ruta/captura-perfil.png)
+![Pantalla de Login y Perfil](./images/Profile.png)
 *Sistema de autenticación y gestión de perfil, donde el usuario puede personalizar su avatar y nombre de jugador.*
 
 ---

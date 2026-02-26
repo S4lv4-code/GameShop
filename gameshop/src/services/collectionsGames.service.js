@@ -24,7 +24,7 @@ export async function addGameToCollection(collectionId, gameId) {
     // Añadimos { requestKey: null } para evitar el auto-cancel
     const existing = await pb.collection("collection_games").getList(1, 1, {
       filter: `collection="${collectionId}" && game="${gameId}"`,
-      requestKey: null // <--- CRUCIAL
+      requestKey: null 
     });
 
     if (existing.totalItems > 0) return existing.items[0];
@@ -32,7 +32,7 @@ export async function addGameToCollection(collectionId, gameId) {
     return await pb.collection("collection_games").create({
       collection: collectionId,
       game: gameId,
-    }, { requestKey: null }); // <--- TAMBIÉN AQUÍ
+    }, { requestKey: null }); 
   } catch (error) {
     // Si el error es por cancelación, lo ignoramos silenciosamente
     if (error.isAbort) return; 

@@ -3,7 +3,7 @@ import pb from "./pocketbase";
 export async function getGames() {
   return await pb.collection("games").getFullList({
     sort: "-created",
-    // Esta es la clave: le pedimos a PB que busque si este juego está en una colección_games
+    // Le pedimos a PB que busque si este juego está en una colección_games
     expand: "collection_games(game).collection" 
   });
 }

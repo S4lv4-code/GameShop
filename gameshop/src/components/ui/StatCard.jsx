@@ -1,4 +1,4 @@
-// src/components/ui/StatCard.jsx
+
 export function StatCard({ title, value, footer, icon }) {
   return (
     <div className="bg-gray-900 border border-gray-800 p-6 rounded-xl space-y-2">

@@ -1,11 +1,12 @@
 import pb from "./pocketbase";
 
+// GET
 export async function getCollections() {
   return await pb.collection("collections").getFullList({
     sort: "-created",
   });
 }
-
+// GET
 export async function getCollectionById(id) {
   return await pb.collection("collections").getOne(id);
 }
